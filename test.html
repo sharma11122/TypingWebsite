@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+
+    <style>
+       *{padding: 0;margin: 0; box-sizing: border-box;font-family: 'Roboto', sans-serif;}
+       .mainDiv{
+           width: 100%;
+           height: 100vh;
+           position: relative;
+           background-color: #3498db;
+       }
+       .centerDiv{
+           position: absolute;
+           top:50%;
+           left:50%;
+           transform: translate(-50%,-50%);
+           text-align:center;
+       }
+       h1{
+           text-transform: capitalize;
+           text-shadow: 3px 3px 2px grey;
+           font-size: 2.1rem;
+           margin-bottom: 30px;
+       }
+       #mywords{
+           background-color: #444;
+           box-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+           border-radius: 10px 10px 0px 0px;
+           border: 20px solid #34495e;
+           color:white;
+           font-size: 1.2rem;
+           
+       }
+       .mainbtn{
+           border-radius: 20px;
+           border: 5px solid #29809b;
+           background: #ecf0f1;
+           font-size: 1rem;
+           padding: 10px 20px;
+       }
+    </style>
+</head>
+<body>
+    <div class="mainDiv">
+        <div class="centerDiv">
+            <h1>Welcome to the Typing Speed Test</h1>
+            <h2 id="msg"></h2>
+            <br>
+            <textarea id="mywords" cols="100" rows="10" placeholder="Type,Here and Start"></textarea>
+            <br>
+            <button id="btn" class="mainbtn">Start</button>
+        </div>
+    </div>
+ <script>
+   const setofWords=[
+       "My name is abhi sharma ,I do what is good for me.",
+       "Believe iin yourself ",
+       "Do whatever you want to do for yourself.",
+       "Love me or hate me its up to you"
+   ];
+   const msg=document.getElementById('msg');
+   const typewords=document.getElementById('mywords');
+   const btn=document.getElementById('btn');
+
+   let startTime,Endtime;
+
+
+    const playGame=()=>{
+       let randomnumber=Math.floor(Math.random()*setofWords.length  );
+       console.log(randomnumber);
+       msg.innerText=setofWords[randomnumber];
+       let date=new Date();
+       startTime=date.getTime();
+       btn.innerText="Done";
+   }
+   const endPlay = () => {
+      let date=new Date();
+      Endtime=date.getTime();
+      let totalTime=((Endtime - startTime)/1000);
+      console.log(totalTime);
+
+      let totalstr=typewords.value;
+      let wordCount=wordCounter(totalstr);
+
+      let speed=Math.round((wordCount/totalTime)*60);
+      
+      let finalMsg="You typed total at "+speed + " words per minutes";
+
+      finalMsg+=compareStr(msg.innerText,totalstr);
+      msg.innerText=finalMsg;
+   }
+   const compareStr=(str1,str2)=>{
+        let word1=str1.split(" "); 
+        let word2=str2.split(" ");
+        let cnt=0;
+        word1.forEach(function(item,index) {
+            if(item==word2[index]){
+                cnt++;
+        }});
+            let errorword=(word1.length-cnt);
+            return(cnt+" "+"correct out of"+" "+ word1.length +" "+ "words and tthe total number of error are"+" "+ errorword+ ". ");
+    }
+   
+   const wordCounter=(str)=>{
+         let response=str.split(" ").length;
+         console.log(response);
+         return response;
+
+   } 
+
+    btn.addEventListener('click',function(){
+        if(this.innerText=='Start'){
+            typewords.disabled=false;
+            playGame();
+        }
+        else if(this.innerText=="Done"){
+            typewords.disabled=true;
+            btn.innerText="Start";
+            endPlay();
+        }
+    })
+ </script>   
+</body>
+</html>
